@@ -1,0 +1,50 @@
+﻿@inherits ViewPage
+@{
+    ViewBag.Title = "Hello World Service";
+}
+<script>
+    var app1 = angular.module('ui.bootstrap.demo', ['ui.bootstrap']);
+    app1.controller('AlertDemoCtrl', function ($scope) {
+        $scope.alerts = [
+          { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
+          { type: 'success', msg: 'Well done! You successfully read this important alert message.' }
+        ];
+
+        $scope.addAlert = function () {
+            $scope.alerts.push({ msg: 'Another alert!' });
+        };
+
+        $scope.closeAlert = function (index) {
+            $scope.alerts.splice(index, 1);
+        };
+    });
+
+    app1.controller('helloCtrl', ['$scope', '$http',
+       function ($scope, $http) {
+           $scope.$watch('name', function () {
+               if ($scope.name) {
+                   $http.get('/hello/' + $scope.name)
+                       .success(function (response) {
+                           $scope.helloResult = response.Result;
+                       });
+               }
+           });
+       }
+    ]);
+</script>
+<div ng-app="ui.bootstrap.demo">
+
+    <div ng-controller="helloCtrl">
+        <div>
+            <input class="form-control input-lg" ng-model="name" id="Name" type="text" placeholder="Type your name">
+            <p ng-bind="helloResult" style="margin-top: 15px;font-size: large" ng-show="name"></p>
+        </div>
+    </div>
+    
+
+    <div ng-controller="AlertDemoCtrl">
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+        <button class='btn btn-default' ng-click="addAlert()">Add Alert</button>
+    </div>
+    
+</div>
