@@ -1,1 +1,1 @@
-# AngularJSSampleApp
+# AngularJSSampleApp with AngularJS
